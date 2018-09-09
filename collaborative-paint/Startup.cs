@@ -51,6 +51,7 @@ namespace collaborative_paint
             app.UseSignalR(route =>
             {
                 route.MapHub<StreamHub>("/streamHub");
+                route.MapHub<ChatHub>("/chatHub");
             });
 
             app.UseMvc();
