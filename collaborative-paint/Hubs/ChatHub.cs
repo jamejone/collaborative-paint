@@ -9,7 +9,7 @@ public class ChatHub : Hub
 {
     public async Task BroadcastMessage(string user, string message)
     {
-        await Clients.All.SendAsync("ReceiveMessage", user, message);
+        await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveMessage", user, message);
     }
 
     public override async Task OnConnectedAsync()
