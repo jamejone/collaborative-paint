@@ -11,7 +11,7 @@ namespace collaborative_paint.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult Index()
         {
             return View();
         }
