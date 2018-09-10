@@ -24,11 +24,6 @@ connection.on("ReceivePaint", (startX, startY, endX, endY) => {
     }
 });
 
-document.getElementById("sendButton").addEventListener("click", event => {
-    connection.invoke("BroadcastPaint", startXArray, startYArray, endXArray, endYArray).catch(err => console.error(err));
-    event.preventDefault();
-});
-
 setInterval(function(){
         connection.invoke("BroadcastPaint", startXArray, startYArray, endXArray, endYArray).catch(err => console.error(err));
         startXArray = [];
@@ -129,14 +124,6 @@ function draw() {
     ctx.lineWidth = y;
     ctx.stroke();
     ctx.closePath();
-}
-
-function erase() {
-var m = confirm("Want to clear");
-if (m) {
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-}
 }
 
 function findxy(e) {
