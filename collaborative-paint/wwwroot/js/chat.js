@@ -8,6 +8,16 @@
 
 var startXArray = [], startYArray = [], endXArray = [], endYArray = [];
 
+var canvas, ctx, flag = false,
+prevX = 0,
+currX = 0,
+prevY = 0,
+currY = 0,
+dot_flag = false;
+
+var brushColor = "black",
+brushThickness = 2;
+
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
     .build();
@@ -25,25 +35,16 @@ connection.on("ReceivePaint", (startX, startY, endX, endY) => {
 });
 
 setInterval(function(){
+    if (connection.connection.connectionState == 1) {
         connection.invoke("BroadcastPaint", startXArray, startYArray, endXArray, endYArray).catch(err => console.error(err));
         startXArray = [];
         startYArray = [];
         endXArray = [];
         endYArray = [];
-    }, 100);
-
+    }
+}, 100);
 
 connection.start().catch(err => console.error(err));
-
-var canvas, ctx, flag = false,
-prevX = 0,
-currX = 0,
-prevY = 0,
-currY = 0,
-dot_flag = false;
-
-var brushColor = "black",
-brushThickness = 2;
 
 function init() {
     canvas = document.getElementById('can');
