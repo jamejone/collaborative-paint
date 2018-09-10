@@ -126,50 +126,50 @@ function draw() {
 }
 
 function findxy(e) {
-if (e.type === 'touchstart' || e.type === 'mousedown') {
-    prevX = currX;
-    prevY = currY;
-
-    if (e.type === 'mousedown') {
-        currX = e.clientX - canvas.offsetLeft;
-        currY = e.clientY - canvas.offsetTop;
-    }
-
-    if (e.type === 'touchstart') {
-        currX = e.touches[0].clientX - canvas.offsetLeft;
-        currY = e.touches[0].clientY - canvas.offsetTop;
-    }
-
-    flag = true;
-    dot_flag = true;
-    if (dot_flag) {
-        ctx.beginPath();
-        ctx.fillStyle = brushColor;
-        ctx.fillRect(currX, currY, 2, 2);
-        ctx.closePath();
-        dot_flag = false;
-    }
-}
-if (e.type === 'touchend' || e.type === 'mouseup' || e.type === 'mouseout') {
-    flag = false;
-}
-if (e.type === 'mousemove' || e.type === 'touchmove' ) {
-    if (flag) {
+    if (e.type === 'touchstart' || e.type === 'mousedown') {
         prevX = currX;
         prevY = currY;
 
-        if (e.type === 'mousemove') {
+        if (e.type === 'mousedown') {
             currX = e.clientX - canvas.offsetLeft;
             currY = e.clientY - canvas.offsetTop;
         }
-    
-        if (e.type === 'touchmove') {
+
+        if (e.type === 'touchstart') {
             currX = e.touches[0].clientX - canvas.offsetLeft;
             currY = e.touches[0].clientY - canvas.offsetTop;
         }
-        draw();
+
+        flag = true;
+        dot_flag = true;
+        if (dot_flag) {
+            ctx.beginPath();
+            ctx.fillStyle = brushColor;
+            ctx.fillRect(currX, currY, 2, 2);
+            ctx.closePath();
+            dot_flag = false;
+        }
     }
-}
+    if (e.type === 'touchend' || e.type === 'mouseup' || e.type === 'mouseout') {
+        flag = false;
+    }
+    if (e.type === 'mousemove' || e.type === 'touchmove' ) {
+        if (flag) {
+            prevX = currX;
+            prevY = currY;
+
+            if (e.type === 'mousemove') {
+                currX = e.clientX - canvas.offsetLeft;
+                currY = e.clientY - canvas.offsetTop;
+            }
+        
+            if (e.type === 'touchmove') {
+                currX = e.touches[0].clientX - canvas.offsetLeft;
+                currY = e.touches[0].clientY - canvas.offsetTop;
+            }
+            draw();
+        }
+    }
 }
 
 init();
