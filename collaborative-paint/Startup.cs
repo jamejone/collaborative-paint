@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SignalRChat.Hubs;
 
 namespace collaborative_paint
 {
@@ -45,7 +44,6 @@ namespace collaborative_paint
 
             app.UseAzureSignalR(route =>
             {
-                route.MapHub<StreamHub>("/streamHub");
                 route.MapHub<ChatHub>("/chatHub");
             });
 
