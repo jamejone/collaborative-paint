@@ -16,7 +16,7 @@ currY = 0,
 dot_flag = false;
 
 var brushColor = "black",
-brushThickness = 2;
+brushThickness = 5;
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
@@ -106,7 +106,7 @@ switch (obj.id) {
         break;
 }
 if (brushColor == "white") y = 14;
-else brushThickness = 2;
+else brushThickness = 5;
 
 }
 
