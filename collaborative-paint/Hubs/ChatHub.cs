@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.SignalR;
 
 public class ChatHub : Hub
 {
-    public async Task BroadcastMessage(string user, string message)
+    public async Task BroadcastPaint(IList<int> startX, IList<int> startY, IList<int> endX, IList<int> endY, string color)
     {
-        await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveMessage", user, message);
-    }
-
-    public async Task BroadcastPaint(IList<int> startX, IList<int> startY, IList<int> endX, IList<int> endY)
-    {
-        await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceivePaint", startX, startY, endX, endY);
+        await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceivePaint", startX, startY, endX, endY, color);
     }
 
     public override async Task OnConnectedAsync()

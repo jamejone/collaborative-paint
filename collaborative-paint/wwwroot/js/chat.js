@@ -22,12 +22,12 @@ const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
     .build();
 
-connection.on("ReceivePaint", (startX, startY, endX, endY) => { 
+connection.on("ReceivePaint", (startX, startY, endX, endY, color) => { 
     for (var i = 0; i < startX.length; i++) {
         ctx.beginPath();
         ctx.moveTo(startX[i], startY[i]);
         ctx.lineTo(endX[i], endY[i]);
-        ctx.strokeStyle = brushColor;
+        ctx.strokeStyle = color;
         ctx.lineWidth = brushThickness;
         ctx.stroke();
         ctx.closePath();
@@ -36,7 +36,7 @@ connection.on("ReceivePaint", (startX, startY, endX, endY) => {
 
 setInterval(function(){
     if (connection.connection.connectionState == 1) {
-        connection.invoke("BroadcastPaint", startXArray, startYArray, endXArray, endYArray).catch(err => console.error(err));
+        connection.invoke("BroadcastPaint", startXArray, startYArray, endXArray, endYArray, brushColor).catch(err => console.error(err));
         startXArray = [];
         startYArray = [];
         endXArray = [];
