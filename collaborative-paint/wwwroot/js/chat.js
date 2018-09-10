@@ -17,8 +17,8 @@ connection.on("ReceivePaint", (startX, startY, endX, endY) => {
         ctx.beginPath();
         ctx.moveTo(startX[i], startY[i]);
         ctx.lineTo(endX[i], endY[i]);
-        ctx.strokeStyle = x;
-        ctx.lineWidth = y;
+        ctx.strokeStyle = brushColor;
+        ctx.lineWidth = brushThickness;
         ctx.stroke();
         ctx.closePath();
     }
@@ -42,14 +42,12 @@ prevY = 0,
 currY = 0,
 dot_flag = false;
 
-var x = "black",
-y = 2;
+var brushColor = "black",
+brushThickness = 2;
 
 function init() {
     canvas = document.getElementById('can');
     ctx = canvas.getContext("2d");
-    w = canvas.width;
-    h = canvas.height;
 
     canvas.addEventListener("mousemove", function (e) {
         findxy(e)
@@ -85,29 +83,29 @@ function init() {
 function color(obj) {
 switch (obj.id) {
     case "green":
-        x = "green";
+    brushColor = "green";
         break;
     case "blue":
-        x = "blue";
+    brushColor = "blue";
         break;
     case "red":
-        x = "red";
+    brushColor = "red";
         break;
     case "yellow":
-        x = "yellow";
+    brushColor = "yellow";
         break;
     case "orange":
-        x = "orange";
+    brushColor = "orange";
         break;
     case "black":
-        x = "black";
+    brushColor = "black";
         break;
     case "white":
-        x = "white";
+    brushColor = "white";
         break;
 }
-if (x == "white") y = 14;
-else y = 2;
+if (brushColor == "white") y = 14;
+else brushThickness = 2;
 
 }
 
@@ -120,8 +118,8 @@ function draw() {
     ctx.beginPath();
     ctx.moveTo(prevX, prevY);
     ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
+    ctx.strokeStyle = brushColor;
+    ctx.lineWidth = brushThickness;
     ctx.stroke();
     ctx.closePath();
 }
@@ -145,7 +143,7 @@ if (e.type === 'touchstart' || e.type === 'mousedown') {
     dot_flag = true;
     if (dot_flag) {
         ctx.beginPath();
-        ctx.fillStyle = x;
+        ctx.fillStyle = brushColor;
         ctx.fillRect(currX, currY, 2, 2);
         ctx.closePath();
         dot_flag = false;
