@@ -1,4 +1,4 @@
-@page
+@model collaborative_paint.Models.StrokeHistoryManager
 
 <!DOCTYPE html>
 <html>
@@ -31,6 +31,9 @@
 // See Es5-chat.js for a Babel transpiled version of the following code:
 
 var startXArray = [], startYArray = [], endXArray = [], endYArray = [];
+var curStrokeStartXArray = [], curStrokeStartYArray = [], curStrokeEndXArray = [], curStrokeEndYArray = [];
+
+var strokeHistory = @Html.Raw(Model.ToJson());
 
 var canvas, ctx, flag = false,
 prevX = 0,
@@ -47,19 +50,23 @@ const connection = new signalR.HubConnectionBuilder()
     .build();
 
 connection.on("ReceivePaint", (startX, startY, endX, endY, color) => { 
-    for (var i = 0; i < startX.length; i++) {
+    paintStroke(startX, startY, endX, endY, color);
+});
+
+function paintStroke(startXArray, startYArray, endXArray, endYArray, color) {
+    for (var i = 0; i < startXArray.length; i++) {
         ctx.beginPath();
-        ctx.moveTo(startX[i], startY[i]);
-        ctx.lineTo(endX[i], endY[i]);
+        ctx.moveTo(startXArray[i], startYArray[i]);
+        ctx.lineTo(endXArray[i], endYArray[i]);
         ctx.strokeStyle = color;
         ctx.lineWidth = brushThickness;
         ctx.stroke();
         ctx.closePath();
     }
-});
+}
 
 setInterval(function(){
-    if (connection.connection.connectionState == 1) {
+    if (connection.connection.connectionState == 1 && startXArray.length > 0) {
         connection.invoke("BroadcastPaint", startXArray, startYArray, endXArray, endYArray, brushColor).catch(err => console.error(err));
         startXArray = [];
         startYArray = [];
@@ -73,6 +80,10 @@ connection.start().catch(err => console.error(err));
 function init() {
     canvas = document.getElementById('can');
     ctx = canvas.getContext("2d");
+
+    for (var i = 0; i < strokeHistory.length; i++) { 
+        paintStroke(strokeHistory[i].StartXList, strokeHistory[i].StartYList, strokeHistory[i].EndXList, strokeHistory[i].EndYList, strokeHistory[i].Color);
+    }
 
     canvas.addEventListener("mousemove", function (e) {
         findxy(e)
@@ -135,10 +146,10 @@ else brushThickness = 5;
 }
 
 function draw() {
-    startXArray.push(prevX);
-    startYArray.push(prevY);
-    endXArray.push(currX);
-    endYArray.push(currY);
+    curStrokeStartXArray.push(prevX);
+    curStrokeStartYArray.push(prevY);
+    curStrokeEndXArray.push(currX);
+    curStrokeEndYArray.push(currY);
 
     ctx.beginPath();
     ctx.moveTo(prevX, prevY);
@@ -176,6 +187,15 @@ function findxy(e) {
     }
     if (e.type === 'touchend' || e.type === 'mouseup' || e.type === 'mouseout') {
         flag = false;
+        startXArray = startXArray.concat(curStrokeStartXArray);
+        startYArray = startYArray.concat(curStrokeStartYArray);
+        endXArray = endXArray.concat(curStrokeEndXArray);
+        endYArray = endYArray.concat(curStrokeEndYArray);
+
+        curStrokeStartXArray = [];
+        curStrokeStartYArray = [];
+        curStrokeEndXArray = [];
+        curStrokeEndYArray = [];
     }
     if (e.type === 'mousemove' || e.type === 'touchmove' ) {
         if (flag) {

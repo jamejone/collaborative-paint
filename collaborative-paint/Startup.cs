@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using collaborative_paint.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -20,9 +21,11 @@ namespace collaborative_paint
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddSingleton<IStrokeHistoryManager, StrokeHistoryManager>();
+
             services
-                .AddSignalR()
-                .AddAzureSignalR();
+                .AddSignalR();
+                //.AddAzureSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +45,8 @@ namespace collaborative_paint
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAzureSignalR(route =>
+            //app.UseAzureSignalR(route =>
+            app.UseSignalR(route =>
             {
                 route.MapHub<ChatHub>("/chatHub");
             });
