@@ -10,6 +10,8 @@ namespace collaborative_paint.Models
         void SaveToHistory(IList<int> startXList, IList<int> startYList, IList<int> endXList,
             IList<int> endYList, string color);
 
+        void Clear();
+
         string ToJson();
     }
 }

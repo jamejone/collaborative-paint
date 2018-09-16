@@ -33,6 +33,11 @@ namespace collaborative_paint.Models
         {
             return JsonConvert.SerializeObject(StrokeHistory);
         }
+
+        public void Clear()
+        {
+            StrokeHistory.Clear();
+        }
     }
 
     public class Stroke

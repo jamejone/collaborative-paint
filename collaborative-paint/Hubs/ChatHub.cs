@@ -26,6 +26,13 @@ public class ChatHub : Hub
         }
     }
 
+    public async Task EraseBoard()
+    {
+        _strokeHistoryManager.Clear();
+
+        await Clients.All.SendAsync("EraseBoard");
+    }
+
     public override async Task OnConnectedAsync()
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, "Default");
