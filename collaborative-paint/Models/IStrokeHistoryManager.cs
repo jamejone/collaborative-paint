@@ -5,7 +5,7 @@ namespace collaborative_paint.Models
 {
     public interface IStrokeHistoryManager
     {
-        ConcurrentBag<Stroke> StrokeHistory { get; } 
+        ConcurrentQueue<Stroke> StrokeHistory { get; } 
 
         void SaveToHistory(IList<int> startXList, IList<int> startYList, IList<int> endXList,
             IList<int> endYList, string color);
