@@ -59,7 +59,7 @@ connection.on("EraseBoard", () => {
 
 function paintStroke(startXArray, startYArray, endXArray, endYArray, color) {
     for (var i = 0; i < startXArray.length; i++) {
-        drawLine(startXArray[i], startYArray[i], endXArray[i], endYArray[i]);
+        drawLine(startXArray[i], startYArray[i], endXArray[i], endYArray[i], color);
     }
 }
 
@@ -146,14 +146,14 @@ function draw() {
     curStrokeEndXArray.push(currX);
     curStrokeEndYArray.push(currY);
 
-    drawLine(prevX, prevY, currX, currY);
+    drawLine(prevX, prevY, currX, currY, brushColor);
 }
 
-function drawLine(x1, y1, x2, y2) {
+function drawLine(x1, y1, x2, y2, color) {
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
-    ctx.strokeStyle = brushColor;
+    ctx.strokeStyle = color;
     ctx.lineWidth = brushThickness;
     ctx.lineCap = 'round';
     ctx.stroke();
