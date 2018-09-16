@@ -55,13 +55,7 @@ connection.on("ReceivePaint", (startX, startY, endX, endY, color) => {
 
 function paintStroke(startXArray, startYArray, endXArray, endYArray, color) {
     for (var i = 0; i < startXArray.length; i++) {
-        ctx.beginPath();
-        ctx.moveTo(startXArray[i], startYArray[i]);
-        ctx.lineTo(endXArray[i], endYArray[i]);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = brushThickness;
-        ctx.stroke();
-        ctx.closePath();
+        drawLine(startXArray[i], startYArray[i], endXArray[i], endYArray[i]);
     }
 }
 
@@ -148,11 +142,16 @@ function draw() {
     curStrokeEndXArray.push(currX);
     curStrokeEndYArray.push(currY);
 
+    drawLine(prevX, prevY, currX, currY);
+}
+
+function drawLine(x1, y1, x2, y2) {
     ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
     ctx.strokeStyle = brushColor;
     ctx.lineWidth = brushThickness;
+    ctx.lineCap = 'round';
     ctx.stroke();
     ctx.closePath();
 }
